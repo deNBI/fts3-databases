@@ -12,7 +12,7 @@ jobs:
   # This workflow contains a single job called "changed-files"
   changed-files:
     # The type of runner that the job will run on
-    runs-on: [self-hosted, fts3-production]
+    runs-on: [self-hosted, fts3-client-production ]
     environment: APPROVAL_REQUIRED
 
     # Steps represent a sequence of tasks that will be executed as part of the job
