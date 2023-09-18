@@ -4,11 +4,20 @@ on:
   workflow_dispatch:
   
 jobs:
+
+  clone_repo:
+      runs-on: [self-hosted, fts3-client-production ]
+      steps:
+        - uses: actions/checkout@v3
+
+      
   transfer-all-files:
+    needs: clone_repo
     runs-on: [self-hosted, fts3-client-production ]
     environment: APPROVAL_REQUIRED
     
     strategy:
+      fail-fast: false
       matrix:
         FILENAME:
           - databases/blast.json
@@ -20,7 +29,6 @@ jobs:
 
           # Add more files as needed
     steps:
-      - uses: actions/checkout@v3
       - name: Dispatch Transfer file workflow for each file
         uses: ./.github/workflows/transfer_file.yml
         with:
