@@ -26,5 +26,5 @@ jobs:
             
       - name: Transfer file with fts3-connector
         run: |
-          echo "Calling with ${{ github.event.inputs.FILENAME }}"
-          curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @${{ github.event.inputs.FILENAME }} "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer"
+          echo "Calling with ${{ inputs.FILENAME | github.event.inputs.FILENAME }}"
+          curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @${{ inputs.FILENAME | github.event.inputs.FILENAME }} "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer"
