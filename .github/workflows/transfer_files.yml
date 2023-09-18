@@ -1,0 +1,27 @@
+name: Transfer All Files
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  transfer-all-files:
+    runs-on: [self-hosted, fts3-client-production ]
+    environment: APPROVAL_REQUIRED
+
+    steps:
+      - name: List files in databases/ directory
+        id: list-files
+        run: |
+          # List all files in the databases/ directory and save them to an array
+          files=($(find databases/ -type f))
+          matrix:
+            FILENAME: ${{ join(files, '\n') }}
+          echo "::set-output name=matrix::${matrix}"
+
+      - name: Dispatch Transfer file workflow for each file
+        uses: ./.github/workflows/transfer_file.yml
+        with:
+          FILENAME: ${{ matrix.FILENAME }}
+        env:
+          FTS3_CLIENT_API_KEY: ${{ secrets.FTS3_CLIENT_API_KEY }}
+          FTS3_CLIENT_ENDPOINT: ${{ secrets.FTS3_CLIENT_ENDPOINT }}
