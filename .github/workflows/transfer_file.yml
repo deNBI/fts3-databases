@@ -3,11 +3,6 @@ name: Transfer file
 # Controls when the workflow will run
 on:
   workflow_call:
-   secrets:
-     FTS3_CLIENT_API_KEY:
-       required: true
-     FTS3_CLIENT_ENDPOINT:
-      required: true
    inputs:
      FILENAME:
       required: true
