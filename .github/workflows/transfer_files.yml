@@ -19,8 +19,8 @@ jobs:
 
 
           # Add more files as needed
-
     steps:
+      - uses: actions/checkout@v3
       - name: Dispatch Transfer file workflow for each file
         uses: ./.github/workflows/transfer_file.yml
         with:
