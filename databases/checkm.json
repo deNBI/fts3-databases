@@ -1,6 +1,7 @@
 {
   "name": "Checkm",
   "path": "checkm",
+  "doi": "10.5281/zenodo.7401545",
   "versions": [
     {
       "name": "v1",
