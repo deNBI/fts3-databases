@@ -1,6 +1,7 @@
 {
   "name": "PLSDB",
   "path": "plsdb",
+  "doi": "10.1093/nar/gky1050", 
   "versions": [
     {
       "name": "2021_06_23_v2",
