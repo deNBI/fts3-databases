@@ -9,7 +9,8 @@
         {
           "source" : "https://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/" ,
           "directory" : true,
-          "allow_filter" : [".\\.tar\\.gz$"]
+          "allow_filter" : [".\\.tar\\.gz$"],
+          "ignore_filter" : [".\\.md5$"]
         }
       ]
     }
