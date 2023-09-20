@@ -5,7 +5,7 @@ name: Process changed files
 # Controls when the workflow will run
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, edited, reopened]
     branches:
       - 'main'
     paths:
