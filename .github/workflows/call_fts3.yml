@@ -37,15 +37,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      - uses: nrwl/nx-set-shas@v3
+        id: last_successful_commit_push
+        with:
+          main-branch-name: ${{ github.base_ref || github.event.inputs.base }}
+          workflow-id: 'test.yml'
 
-      - name: Get changed files
-        id: changed-files
+      - name: Run changed-files with the commit of the last successful test workflow run
+        id: changed-files-base-sha-push
         uses: tj-actions/changed-files@v39
         with:
-          since_last_remote_commit: "true"
+          base_sha: ${{ steps.last_successful_commit_push.outputs.base }}
           files: |
             databases/*.json
           files_ignore: databases/database_schema.json
+
 
       - name: Create matrix from changed files
         id: create-matrix
