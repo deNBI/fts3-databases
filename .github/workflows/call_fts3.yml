@@ -42,7 +42,7 @@ jobs:
       - name: Base SHA
         id: create-matrix
         run: |
-              echo "matrix=($(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/))"
+              echo "matrix=$(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)" >> $GITHUB_OUTPUT
 
         
     #  - name: Get changed files with git diff and send to fts3-connector
