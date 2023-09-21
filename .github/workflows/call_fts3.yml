@@ -44,7 +44,12 @@ jobs:
             databases/*.json
           files_ignore: databases/database_schema.json
 
-            
+      - name: Create matrix from changed files
+        id: create-matrix
+        run: |
+          echo "::set-output name=matrix::$(echo "${{ steps.changed-files.outputs.all_files }}" | tr '\n' ',')"
+        shell: bash  
+        
       - name: Get changed files with git diff and send to fts3-connector
         id: git-diff
         run: |
@@ -53,3 +58,17 @@ jobs:
             echo "Calling with $file"
             curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
           done
+
+  validate_changed_jsons:
+    needs: changed-files
+    strategy:
+      fail-fast: false
+      matrix:
+          FILENAME: ${{ steps.create-matrix.outputs.matrix }}
+
+
+          # Add more files as needed
+    uses: ./.github/workflows/validate_database_json.yml
+    with:
+          FILENAME: ${{ matrix.FILENAME }}
+    secrets: inherit
