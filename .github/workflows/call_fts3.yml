@@ -40,20 +40,28 @@ jobs:
           fetch-depth: 0
           path: fts3-databases
           
-        
-      - name: Get changed files with git diff and send to fts3-connector
+      - name: Get changed files with git diff
         id: git-diff
         run: |
-            cd ./fts3-databases
-            git_diff_output=$(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)
-            
-            if [ -n "$git_diff_output" ]; then
-              for file in $git_diff_output; do
-                echo "Calling with $file"
-                curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @"$file" "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
-              done
-            else
-              echo "No changed files found in the 'databases/' directory. Skipping the step."
-            fi
+          cd ./fts3-databases
+          git_diff_output=$(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)
+          echo "files=$git_diff_output" >> "$GITHUB_OUTPUT"
+          
+      - name: Send changed files to fts3-connector
+        if: steps.git-diff.outputs.files != ''
+        run: |
+          cd ./fts3-databases
+          git_diff_output="${{ steps.git-diff.outputs.files}}"
+          
+          for file in $git_diff_output; do
+            echo "Calling with $file"
+            curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @"$file" "${{ secrets.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
+          done
+
+      - name: Skip if no changed files
+        if: steps.git-diff.outputs.files == ''
+        run: |
+          echo "No changed files found in the 'databases/' directory. Skipping the step."
+
 
 
