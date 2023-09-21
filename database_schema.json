@@ -29,7 +29,7 @@
                   "type": "array",
                   "items": { "type": "string" }
                 },
-                "zenodo": { "type": "string" }
+                "zenodo": { "type": "boolean" }
               },
               "required": ["source"]
             }
