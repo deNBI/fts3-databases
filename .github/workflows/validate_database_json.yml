@@ -17,9 +17,11 @@ jobs:
   verify-json-validation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+        with:
+            path: fts3-databases
       - name: Validate JSON
         uses: docker://orrosenblatt/validate-json-action:latest
         env:
-          INPUT_SCHEMA: ./fts3-databases/fts3-databases/databases/database_schema.json
-          INPUT_JSONS: ./fts3-databases/fts3-databases/databases/${{ inputs.FILENAME || github.event.inputs.FILENAME }}"
+          INPUT_SCHEMA: ./fts3-databases/databases/database_schema.json
+          INPUT_JSONS: ./fts3-databases/databases/${{ inputs.FILENAME || github.event.inputs.FILENAME }}"
