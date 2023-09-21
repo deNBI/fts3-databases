@@ -40,34 +40,15 @@ jobs:
 
 
       - name: Base SHA
-        id: base-sha
-        run: echo "sha=$(git rev-parse origin/${{ github.base_ref || github.event.inputs.base }})" >> $GITHUB_OUTPUT
-
-      - name: Run changed-files with the commit of the last successful test workflow run
-        id: changed-files-base-sha-push
-        uses: tj-actions/changed-files@v39
-        with:
-          base_sha: "${{ steps.base-sha.outputs.sha }}"
-      #    files: |
-        #    databases/*.json
-          files_ignore: databases/database_schema.json
-
-
-      - name: Create matrix from changed files
         id: create-matrix
         run: |
-          if [[ -n "${{ steps.changed-files.outputs.all_files }}" ]]; then
-            echo "matrix=$(echo "${{ steps.changed-files.outputs.all_files }}" | tr '\n' ',')" >> $GITHUB_OUTPUT
-          else
-            echo "matrix=" >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+              echo "matrix=($(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/))"
+
         
       - name: Get changed files with git diff and send to fts3-connector
         id: git-diff
         run: |
-          declare -a CHANGED=($(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/**))
-          for file in "${CHANGED[@]}"; do
+          for file in "${steps.create-matrix.outputs.matrix[@]}"; do
             echo "Calling with $file"
             curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
           done
