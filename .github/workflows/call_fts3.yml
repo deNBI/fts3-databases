@@ -42,7 +42,20 @@ jobs:
       - name: Base SHA
         id: create-matrix
         run: |
-              echo "matrix=$(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)" >> $GITHUB_OUTPUT
+              matrix_json='['
+              first=true
+          
+              for file in $(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/); do
+                if [ "$first" = true ]; then
+                  first=false
+                else
+                  matrix_json+=','
+                fi
+                matrix_json+="\"$file\""
+              done
+          
+              matrix_json+=']'
+              echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
 
         
     #  - name: Get changed files with git diff and send to fts3-connector
