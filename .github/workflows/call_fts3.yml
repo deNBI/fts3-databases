@@ -42,6 +42,8 @@ jobs:
           since_last_remote_commit: "true"
           files: |
             databases/*.json
+          files_ignore: databases/database_schema.json
+
             
       - name: Get changed files with git diff and send to fts3-connector
         id: git-diff
