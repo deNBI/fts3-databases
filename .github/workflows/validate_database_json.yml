@@ -35,7 +35,7 @@ jobs:
           FILENAME="./fts3-databases/databases/${{ inputs.FILENAME || github.event.inputs.FILENAME }}"
           SCHEMA="./fts3-databases/databases/database_schema.json"
 
-          if npx ajv -s "$SCHEMA" -d "$FILENAME"; then
+          if npx ajv --spec=draft2020 -s "$SCHEMA" -d "$FILENAME"; then
             echo "JSON is valid."
           else
             echo "JSON is invalid."
