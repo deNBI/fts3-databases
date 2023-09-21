@@ -25,7 +25,7 @@ jobs:
 
       - name: Validate JSON
         run: |
-          FILENAME="./fts3-databases/*.json"
+          FILENAME="./fts3-databases/databases/*.json"
           SCHEMA="./fts3-databases/database_schema.json"
 
           if npx ajv validate --spec=draft2020 --errors=text -s "$SCHEMA" -d "$FILENAME"; then
