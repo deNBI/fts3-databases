@@ -65,9 +65,6 @@ jobs:
       fail-fast: false
       matrix:
           FILENAME: ${{ steps.create-matrix.outputs.matrix }}
-
-
-          # Add more files as needed
     uses: ./.github/workflows/validate_database_json.yml
     with:
           FILENAME: ${{ matrix.FILENAME }}
