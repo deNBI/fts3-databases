@@ -1,4 +1,4 @@
-name: Validate JSON
+name: Validate JSONs
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  validate-json:
+  validate-jsons:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
