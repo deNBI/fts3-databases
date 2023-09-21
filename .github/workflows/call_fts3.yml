@@ -7,8 +7,7 @@ on:
   pull_request:
     branches:
       - 'main'
-    paths:
-      - 'databases/**.json'
+
   workflow_dispatch:
     inputs:
       base:
