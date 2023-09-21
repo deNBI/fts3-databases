@@ -45,13 +45,13 @@ jobs:
               echo "matrix=($(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/))"
 
         
-      - name: Get changed files with git diff and send to fts3-connector
-        id: git-diff
-        run: |
-          for file in "${steps.create-matrix.outputs.matrix[@]}"; do
-            echo "Calling with $file"
-            curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
-          done
+    #  - name: Get changed files with git diff and send to fts3-connector
+     #   id: git-diff
+      #  run: |
+       #   for file in "${steps.create-matrix.outputs.matrix[@]}"; do
+        #    echo "Calling with $file"
+         #   curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
+          #done
 
   validate_changed_jsons:
     needs: changed-files
