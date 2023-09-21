@@ -1,11 +1,11 @@
-name: Validate JSONs
+name: Validate JSON
 
 on:
   workflow_call:
-   inputs:
-     FILENAME:
-      required: true
-      type: string
+    inputs:
+      FILENAME:
+        required: true
+        type: string
   
   workflow_dispatch:
     inputs:
@@ -14,14 +14,30 @@ on:
         type: string
 
 jobs:
-  verify-json-validation:
+  validate-json:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-            path: fts3-databases
+          path: fts3-databases
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Use the Node.js version you prefer
+
+      - name: Install dependencies
+        run: npm install ajv-cli
+
       - name: Validate JSON
-        uses: docker://orrosenblatt/validate-json-action:latest
-        env:
-          INPUT_SCHEMA: ./fts3-databases/databases/database_schema.json
-          INPUT_JSONS: ./fts3-databases/databases/${{ inputs.FILENAME || github.event.inputs.FILENAME }}"
+        run: |
+          FILENAME="./fts3-databases/databases/${{ inputs.FILENAME || github.event.inputs.FILENAME }}"
+          SCHEMA="./fts3-databases/databases/database_schema.json"
+
+          if npx ajv -s "$SCHEMA" -d "$FILENAME"; then
+            echo "JSON is valid."
+          else
+            echo "JSON is invalid."
+            exit 1
+          fi
