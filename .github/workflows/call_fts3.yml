@@ -48,8 +48,8 @@ jobs:
         uses: tj-actions/changed-files@v39
         with:
           base_sha: "${{ steps.base-sha.outputs.sha }}"
-          files: |
-            databases/*.json
+      #    files: |
+        #    databases/*.json
           files_ignore: databases/database_schema.json
 
 
