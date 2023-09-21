@@ -7,15 +7,12 @@ on:
   pull_request:
     branches:
       - 'main'
-
     paths:
       - 'databases/**.json'
-
   workflow_dispatch:
     inputs:
       base:
         type: string
-        default: main
         required: true
       head:
         type: string
@@ -26,37 +23,30 @@ jobs:
   # This workflow contains a single job called "changed-files"
   changed-files:
     # The type of runner that the job will run on
-    runs-on: [self-hosted, fts3-client-production ]
+    runs-on: [self-hosted, fts3-production]
     environment: APPROVAL_REQUIRED
-
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps: 
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          
-      - name: Get changed files with git diff
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v16
+        with:
+          since_last_remote_commit: "true"
+          files: |
+            databases/*.json
+            
+      - name: Get changed files with git diff and send to fts3-connector
         id: git-diff
         run: |
-          git_diff_output=$(git diff --name-only origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)
-          
-      - name: Send changed files to fts3-connector
-        if: steps.git-diff.outputs.files != ''
-        run: |
-          git_diff_output="${{ steps.git-diff.outputs.files}}"
-          
-          for file in $git_diff_output; do
+          declare -a CHANGED=($(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/))
+          for file in "${CHANGED[@]}"; do
             echo "Calling with $file"
-            curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @"$file" "${{ secrets.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
+            curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
           done
-
-      - name: Skip if no changed files
-        if: steps.git-diff.outputs.files == ''
-        run: |
-          echo "No changed files found in the 'databases/' directory. Skipping the step."
-
-
-
