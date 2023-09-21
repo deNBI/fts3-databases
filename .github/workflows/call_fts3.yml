@@ -43,6 +43,7 @@ jobs:
       - name: Get changed files with git diff
         id: git-diff
         run: |
+          cd fts3-databases
           git_diff_output=$(git diff --name-only origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)
           echo "files=$git_diff_output" >> "$GITHUB_OUTPUT"
           
