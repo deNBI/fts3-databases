@@ -67,6 +67,7 @@ jobs:
 
   validate_changed_jsons:
     needs: changed-files
+    if: ${{ needs.changed-files.outputs.changed_files != '' }}
     strategy:
       fail-fast: false
       matrix:
