@@ -8,6 +8,9 @@ on:
     branches:
       - 'main'
 
+    paths:
+      - 'databases/**.json'
+
   workflow_dispatch:
     inputs:
       base:
@@ -36,43 +39,13 @@ jobs:
         with:
           fetch-depth: 0
           
-
-
-      - name: Base SHA
-        id: create-matrix
-        run: |
-              matrix_json='['
-              first=true
-          
-              for file in $(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/); do
-                if [ "$first" = true ]; then
-                  first=false
-                else
-                  matrix_json+=','
-                fi
-                matrix_json+="\"$file\""
-              done
-          
-              matrix_json+=']'
-              echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
-
         
-    #  - name: Get changed files with git diff and send to fts3-connector
-     #   id: git-diff
-      #  run: |
-       #   for file in "${steps.create-matrix.outputs.matrix[@]}"; do
-        #    echo "Calling with $file"
-         #   curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
-          #done
+      - name: Get changed files with git diff and send to fts3-connector
+        id: git-diff
+        run: |
+          for file in "$git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)"; do
+            echo "Calling with $file"
+            curl -H "X-AUTH-HEADER: ${{ secrets.FTS3_CLIENT_API_KEY }}" -H "Content-Type: application/json" -X POST -d @$file "${{ vars.FTS3_CLIENT_ENDPOINT }}/transfer/dry"
+          done
 
-  validate_changed_jsons:
-    needs: changed-files
-    if: ${{ needs.changed-files.outputs.changed_files }}
-    strategy:
-      fail-fast: false
-      matrix:
-          FILENAME: ${{fromJSON( needs.changed-files.outputs.changed_files)}}
-    uses: ./.github/workflows/validate_database_json.yml
-    with:
-          FILENAME: ${{ matrix.FILENAME }}
-    secrets: inherit
+
