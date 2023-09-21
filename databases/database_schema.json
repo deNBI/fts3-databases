@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "required": true },
+    "path": { "type": "string", "required": true },
+    "doi": { "type": "string" },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "required": true },
+          "path": { "type": "string", "required": true },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": { "type": "string", "required": true },
+                "directory": { "type": "boolean" },
+                "allow_filter": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "ignore_filter": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "zenodo": { "type": "string" }
+              },
+              "required": ["source"]
+            }
+          }
+        },
+        "required": ["name", "path"]
+      }
+    }
+  },
+  "required": ["name", "path", "versions"]
+}
