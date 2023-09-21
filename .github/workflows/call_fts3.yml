@@ -71,7 +71,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          FILENAME: ${{ needs.changed-files.outputs.changed_files}}
+          FILENAME: ${{fromJSON( needs.changed-files.outputs.changed_files)}}
     uses: ./.github/workflows/validate_database_json.yml
     with:
           FILENAME: ${{ matrix.FILENAME }}
