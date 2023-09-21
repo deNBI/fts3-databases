@@ -27,6 +27,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: [self-hosted, fts3-client-production ]
     environment: APPROVAL_REQUIRED
+    outputs:
+      changed_files: ${{ steps.create-matrix.outputs.matrix }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps: 
@@ -48,7 +50,7 @@ jobs:
       - name: Create matrix from changed files
         id: create-matrix
         run: |
-          echo "::set-output name=matrix::$(echo "${{ steps.changed-files.outputs.all_files }}" | tr '\n' ',')"
+          echo "matrix=$(echo "${{ steps.changed-files.outputs.all_files }}" | tr '\n' ',')" >> $GITHUB_OUTPUT
         shell: bash  
         
       - name: Get changed files with git diff and send to fts3-connector
@@ -65,7 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          FILENAME: ${{ steps.create-matrix.outputs.matrix }}
+          FILENAME: ${{ needs.changed-files.outputs.changed_files}}
     uses: ./.github/workflows/validate_database_json.yml
     with:
           FILENAME: ${{ matrix.FILENAME }}
