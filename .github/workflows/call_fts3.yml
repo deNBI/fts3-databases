@@ -38,17 +38,17 @@ jobs:
         with:
           fetch-depth: 0
           
-      - uses: nrwl/nx-set-shas@v3
-        id: last_successful_commit_push
-        with:
-          main-branch-name: ${{ github.base_ref || github.event.inputs.base }}
-          workflow-id: 'test.yml'
+
+
+      - name: Base SHA
+        id: base-sha
+        run: echo "sha=$(git rev-parse origin/${{ github.base_ref || github.event.inputs.base }})" >> $GITHUB_OUTPUT
 
       - name: Run changed-files with the commit of the last successful test workflow run
         id: changed-files-base-sha-push
         uses: tj-actions/changed-files@v39
         with:
-          base_sha: ${{ steps.last_successful_commit_push.outputs.base }}
+          base_sha: "${{ steps.base-sha.outputs.sha }}"
           files: |
             databases/*.json
           files_ignore: databases/database_schema.json
