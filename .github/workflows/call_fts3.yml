@@ -50,8 +50,12 @@ jobs:
       - name: Create matrix from changed files
         id: create-matrix
         run: |
-          echo "matrix=$(echo "${{ steps.changed-files.outputs.all_files }}" | tr '\n' ',')" >> $GITHUB_OUTPUT
-        shell: bash  
+          if [[ -n "${{ steps.changed-files.outputs.all_files }}" ]]; then
+            echo "matrix=$(echo "${{ steps.changed-files.outputs.all_files }}" | tr '\n' ',')" >> $GITHUB_OUTPUT
+          else
+            echo "matrix=" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
         
       - name: Get changed files with git diff and send to fts3-connector
         id: git-diff
