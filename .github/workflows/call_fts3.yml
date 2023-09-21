@@ -43,14 +43,12 @@ jobs:
       - name: Get changed files with git diff
         id: git-diff
         run: |
-          cd ./fts3-databases
           git_diff_output=$(git diff --name-only -r origin/${{ github.base_ref || github.event.inputs.base }} origin/${{ github.head_ref || github.event.inputs.head }} | grep databases/)
           echo "files=$git_diff_output" >> "$GITHUB_OUTPUT"
           
       - name: Send changed files to fts3-connector
         if: steps.git-diff.outputs.files != ''
         run: |
-          cd ./fts3-databases
           git_diff_output="${{ steps.git-diff.outputs.files}}"
           
           for file in $git_diff_output; do
