@@ -1,8 +1,7 @@
 {
   "name": "GTDB-Tk",
-  "path": "gtdb_tk",
-  "doi": "10.1093/bioinformatics/btz848",
-  
+  "path": "gtdb_tk-test",
+  "doi": "10.1093/bioinformatics/btz848", 
   "versions": [
     {
       "name": "2023-06-09",
