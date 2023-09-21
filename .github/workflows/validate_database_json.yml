@@ -6,6 +6,7 @@ on:
       FILENAME:
         required: true
         type: string
+
   
   workflow_dispatch:
     inputs:
@@ -41,3 +42,4 @@ jobs:
             echo "JSON is invalid."
             exit 1
           fi
+
