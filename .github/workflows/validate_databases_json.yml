@@ -2,17 +2,8 @@ name: Validate JSON
 
 on:
   workflow_call:
-    inputs:
-      FILENAME:
-        required: true
-        type: string
 
-  
   workflow_dispatch:
-    inputs:
-      FILENAME:
-        required: true
-        type: string
 
 jobs:
   validate-json:
@@ -33,10 +24,10 @@ jobs:
 
       - name: Validate JSON
         run: |
-          FILENAME="./fts3-databases/${{ inputs.FILENAME || github.event.inputs.FILENAME }}"
+          FILENAME="./fts3-databases/*.json"
           SCHEMA="./fts3-databases/database_schema.json"
 
-          if npx ajv validate --spec=draft2020 --errors=text  -s "$SCHEMA" -d "$FILENAME"; then
+          if npx ajv validate --spec=draft2020 --errors=text -s "$SCHEMA" -d "$FILENAME"; then
             echo "JSON is valid."
           else
             echo "JSON is invalid."
