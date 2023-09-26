@@ -20,6 +20,7 @@ jobs:
           - databases/card.json
           - databases/checkm.json
           - databases/plsdb.json
+          - databases/alphafold.json
 
 
           # Add more files as needed
