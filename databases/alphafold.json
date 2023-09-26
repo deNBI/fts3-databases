@@ -7,7 +7,7 @@
       "path": "databases",
       "files": [
         {
-          "source" : "https://ftp.ebi.ac.uk/pub/databases/alphafold/v4/,
+          "source" : "https://ftp.ebi.ac.uk/pub/databases/alphafold/v4/",
           "directory" : true,
         }
       ]
