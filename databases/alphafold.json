@@ -1,0 +1,16 @@
+{
+  "name": "Alphafold",
+  "path": "alphafold",
+  "versions": [
+    {
+      "name": "v4",
+      "path": "databases",
+      "files": [
+        {
+          "source" : "https://ftp.ebi.ac.uk/pub/databases/alphafold/v4/,
+          "directory" : true,
+        }
+      ]
+    }
+  ]
+}
