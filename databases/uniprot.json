@@ -1,0 +1,17 @@
+{
+  "name": "uniprot",
+  "path": "uniref",
+  "versions": [
+    {
+      "name": "2023-11-08",
+      "path": "uniref90",
+      "files": [
+        {
+          "source" : "https://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/" ,
+          "directory" : true,
+          "allow_filter" : ["\\.gz(\\.md5)?$"]
+        }
+      ]
+    }
+  ]
+}
