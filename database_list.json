@@ -4,6 +4,7 @@
     "gtdb-tk.json",
     "card.json",
     "checkm.json",
-    "plsdb.json"
+    "plsdb.json",
+    "uniprot.json"
   ]
 }
