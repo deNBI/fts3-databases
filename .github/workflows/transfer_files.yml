@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        FILENAME: ${{ fromJson(needs.list-manifests.outputs.matrix) }}
+        FILENAME: ${{ fromJson(needs.list-databases.outputs.matrix) }}
 
           # Add more files as needed
     uses: ./.github/workflows/transfer_file.yml
