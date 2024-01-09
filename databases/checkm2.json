@@ -1,0 +1,17 @@
+{
+  "name": "Checkm",
+  "path": "checkm2",
+  "doi": "10.5281/zenodo.4626518",
+  "versions": [
+    {
+      "name": "v1",
+      "path": "v1",
+      "files": [
+        {
+          "source": "10.5281/zenodo.4626519",
+          "zenodo": true
+        }
+      ]
+    }
+  ]
+}
