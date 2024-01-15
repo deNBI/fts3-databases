@@ -12,11 +12,20 @@
         }
       ]
     },
-        {
+    {
       "name": "v1.1",
       "files": [
         {
           "source": "10.5281/zenodo.4671167",
+          "zenodo": true
+        }
+      ]
+    },
+    {
+      "name": "v2",
+      "files": [
+        {
+          "source": "10.5281/zenodo.5571251",
           "zenodo": true
         }
       ]
