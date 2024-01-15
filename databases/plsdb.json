@@ -1,19 +1,15 @@
 {
-  "name": "PLSDB",
-  "path": "plsdb",
-  "doi": "10.1093/nar/gky1050", 
-  "versions": [
-    {
-      "name": "2021_06_23_v2",
-      "path": "",
-      "files": [
+    "name": "PLSDB",
+    "path": "plsdb",
+    "doi": "10.1093/nar/gky1050",
+    "versions": [
         {
-          "source": "https://ccb-microbe.cs.uni-saarland.de/plsdb/plasmids/download/plasmids_meta.tar.bz2"
-        },
-        {
-          "source": "https://ccb-microbe.cs.uni-saarland.de/plsdb/plasmids/download/plsdb.fna.bz2"
+            "name": "2021_06_23_v2",
+            "files": [
+                {
+                    "source": "https://figshare.com/ndownloader/articles/19153574/versions/2"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
