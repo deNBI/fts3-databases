@@ -5,7 +5,6 @@
   "versions": [
     {
       "name": "2021_06_23_v2",
-      "path": "",
       "files": [
         {
           "source": "https://ccb-microbe.cs.uni-saarland.de/plsdb/plasmids/download/plasmids_meta.tar.bz2"
